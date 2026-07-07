@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thalassa | Fine Dining in Piraeus</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -13,6 +13,7 @@
                     colors: {
                         aegean: {
                             50: '#f0f7fa',
+                            100: '#e0f0f6',
                             500: '#0ea5e9',
                             800: '#075985',
                             900: '#0c4a6e',
@@ -28,21 +29,89 @@
     </script>
     <style>
         .hero-bg {
-            background-image: linear-gradient(rgba(12, 74, 110, 0.6), rgba(12, 74, 110, 0.8)), url('https://images.unsplash.com/photo-1515669097368-22e68427d265?q=80&w=2070&auto=format&fit=crop');
+            background-image: linear-gradient(rgba(12, 74, 110, 0.65), rgba(12, 74, 110, 0.85)), url('https://images.unsplash.com/photo-1515669097368-22e68427d265?q=80&w=2070&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
         }
     </style>
 </head>
-<body class="font-sans text-gray-800 antialiased bg-gray-50">
+<body class="font-sans text-gray-800 antialiased bg-gray-50 relative">
 
-    <!-- Navigation -->
-    <nav class="absolute top-0 w-full z-50 px-6 py-4 flex justify-between items-center text-white">
+    <!-- Menu Overlay Modal -->
+    <div id="menuModal" class="fixed inset-0 z-[100] bg-aegean-900/95 backdrop-blur-md hidden justify-center items-center p-4">
+        <div class="bg-white max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative rounded-sm">
+            <button id="closeMenuBtn" class="absolute top-6 right-6 text-gray-400 hover:text-aegean-900 transition duration-200">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            
+            <div class="p-8 md:p-14">
+                <h2 class="text-4xl font-serif font-bold text-aegean-900 mb-2 text-center">Thalassa Menu</h2>
+                <p class="text-center text-gray-500 mb-10 tracking-widest uppercase text-sm">A Culinary Journey</p>
+                
+                <div class="space-y-10">
+                    <div>
+                        <h3 class="text-2xl font-serif font-semibold text-aegean-800 mb-4 border-b border-aegean-100 pb-2">Starters</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-baseline">
+                                <div>
+                                    <h4 class="text-lg font-medium text-gray-900">Grilled Aegean Octopus</h4>
+                                    <p class="text-sm text-gray-600 font-light mt-1">Santorini fava puree, capers, caramelized shallots</p>
+                                </div>
+                                <span class="text-lg font-semibold text-aegean-900 ml-4">€24</span>
+                            </div>
+                            <div class="flex justify-between items-baseline">
+                                <div>
+                                    <h4 class="text-lg font-medium text-gray-900">Tuna Tartare</h4>
+                                    <p class="text-sm text-gray-600 font-light mt-1">Avocado, citrus dressing, sesame, squid ink tuile</p>
+                                </div>
+                                <span class="text-lg font-semibold text-aegean-900 ml-4">€28</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-2xl font-serif font-semibold text-aegean-800 mb-4 border-b border-aegean-100 pb-2">Main Courses</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-baseline">
+                                <div>
+                                    <h4 class="text-lg font-medium text-gray-900">Fresh Catch of the Day</h4>
+                                    <p class="text-sm text-gray-600 font-light mt-1">Grilled with ladolemono, wild greens (price per kg)</p>
+                                </div>
+                                <span class="text-lg font-semibold text-aegean-900 ml-4">€85</span>
+                            </div>
+                            <div class="flex justify-between items-baseline">
+                                <div>
+                                    <h4 class="text-lg font-medium text-gray-900">Lobster Kritharoto</h4>
+                                    <p class="text-sm text-gray-600 font-light mt-1">Orzo pasta, fresh tomato, bisque, herbs</p>
+                                </div>
+                                <span class="text-lg font-semibold text-aegean-900 ml-4">€45</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation (Flexbox Layout to prevent collisions) -->
+    <nav class="absolute top-0 w-full z-50 px-6 py-5 flex flex-wrap justify-between items-center text-white gap-4">
+        <!-- Logo -->
         <div class="text-2xl font-serif font-bold tracking-wider">THALASSA</div>
+        
+        <!-- Center Links (Hidden on small screens to save space) -->
         <div class="hidden md:flex space-x-8 text-sm font-medium tracking-wide">
             <a href="#" class="hover:text-aegean-500 transition">HOME</a>
             <a href="#about" class="hover:text-aegean-500 transition">THE EXPERIENCE</a>
-            <a href="#book" class="hover:text-aegean-500 transition">RESERVATIONS</a>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex items-center space-x-4">
+            <button id="openMenuBtn" class="bg-transparent border border-white/50 px-5 py-2 text-sm font-semibold uppercase tracking-widest hover:bg-white hover:text-aegean-900 transition duration-300">
+                View Menu
+            </button>
+            <a href="#book" class="bg-white text-aegean-900 px-5 py-2 text-sm font-semibold uppercase tracking-widest hover:bg-aegean-500 hover:text-white transition duration-300 hidden sm:block">
+                Book Table
+            </a>
         </div>
     </nav>
 
@@ -50,40 +119,49 @@
     <header class="hero-bg h-screen flex flex-col justify-center items-center text-center px-4">
         <h1 class="text-5xl md:text-7xl font-serif font-bold text-white mb-6">A Taste of the Aegean</h1>
         <p class="text-lg md:text-xl text-gray-200 mb-10 max-w-2xl font-light">Experience modern Mediterranean gastronomy overlooking the beautiful Marina Zeas in Piraeus.</p>
-        <a href="#book" class="bg-white text-aegean-900 px-8 py-3 rounded-none uppercase tracking-widest text-sm font-semibold hover:bg-aegean-500 hover:text-white transition duration-300">Book a Table</a>
+        <a href="#book" class="bg-white text-aegean-900 px-8 py-3 uppercase tracking-widest text-sm font-semibold hover:bg-aegean-500 hover:text-white transition duration-300">Reserve Now</a>
     </header>
 
     <!-- Booking Section -->
     <section id="book" class="py-24 px-4 bg-white">
-        <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-            <div>
+        <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div class="pr-0 md:pr-8">
                 <h2 class="text-4xl font-serif font-bold text-aegean-900 mb-6">Reserve Your Table</h2>
                 <p class="text-gray-600 mb-8 font-light leading-relaxed">
                     Join us at Thalassa for an unforgettable culinary journey. Due to limited seating, we highly recommend booking in advance. For parties larger than 6, please contact us directly.
                 </p>
-                <div class="space-y-4 text-sm text-gray-500">
-                    <p>📍 Marina Zeas, Piraeus 185 36, Greece</p>
-                    <p>📞 +30 210 123 4567</p>
-                    <p>🕒 Tue - Sun: 18:00 - 24:00</p>
+                <div class="space-y-4 text-sm text-gray-600 font-medium">
+                    <p class="flex items-center"><span class="text-aegean-500 mr-3 text-lg">📍</span> Marina Zeas, Piraeus 185 36, Greece</p>
+                    <p class="flex items-center"><span class="text-aegean-500 mr-3 text-lg">📞</span> +30 210 123 4567</p>
+                    <p class="flex items-center"><span class="text-aegean-500 mr-3 text-lg">🕒</span> Tue - Sun: 18:00 - 24:00</p>
                 </div>
             </div>
 
             <div class="bg-aegean-50 p-8 shadow-sm border border-aegean-100 relative">
-                <div id="success-message" class="hidden absolute inset-0 bg-aegean-900 text-white flex-col justify-center items-center text-center p-8 z-10">
+                <!-- Success State Overlay -->
+                <div id="successMessage" class="hidden absolute inset-0 bg-aegean-900 text-white flex-col justify-center items-center text-center p-8 z-10">
                     <svg class="w-16 h-16 mb-4 text-aegean-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     <h3 class="text-2xl font-serif mb-2">Request Received</h3>
                     <p class="font-light">Thank you! Your booking is pending. We will review it and you will receive a confirmation shortly.</p>
                 </div>
 
-                <form id="booking-form" class="space-y-5">
+                <form id="bookingForm" class="space-y-5">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                         <input type="text" id="name" required class="w-full px-4 py-2 border border-gray-300 focus:ring-aegean-500 focus:border-aegean-500 outline-none transition">
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                        <input type="email" id="email" required class="w-full px-4 py-2 border border-gray-300 focus:ring-aegean-500 focus:border-aegean-500 outline-none transition">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                            <input type="email" id="email" required class="w-full px-4 py-2 border border-gray-300 focus:ring-aegean-500 focus:border-aegean-500 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                            <input type="tel" id="phone" required class="w-full px-4 py-2 border border-gray-300 focus:ring-aegean-500 focus:border-aegean-500 outline-none transition" placeholder="+30...">
+                        </div>
                     </div>
+
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
@@ -101,11 +179,19 @@
                             </select>
                         </div>
                     </div>
+                    
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Number of Guests</label>
                         <input type="number" id="guests" min="1" max="6" required class="w-full px-4 py-2 border border-gray-300 focus:ring-aegean-500 focus:border-aegean-500 outline-none transition">
                     </div>
-                    <button type="submit" id="submit-btn" class="w-full bg-aegean-900 text-white py-3 uppercase tracking-widest text-sm font-semibold hover:bg-aegean-800 transition duration-300">
+
+                    <!-- Anti-Bot CAPTCHA -->
+                    <div class="bg-white p-4 border border-gray-200 flex items-center justify-between mt-2">
+                        <label id="captchaLabel" class="text-sm font-semibold text-aegean-900">Security Check: Loading...</label>
+                        <input type="number" id="captchaInput" required class="w-24 px-3 py-2 border border-gray-300 focus:ring-aegean-500 focus:border-aegean-500 outline-none transition text-center font-bold text-gray-800" placeholder="?">
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="w-full bg-aegean-900 text-white py-3 uppercase tracking-widest text-sm font-semibold hover:bg-aegean-800 transition duration-300 mt-4">
                         Request Booking
                     </button>
                 </form>
