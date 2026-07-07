@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thalassa | Fine Dining in Piraeus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        aegean: {
+                            50: '#f0f7fa',
+                            500: '#0ea5e9',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .hero-bg {
+            background-image: linear-gradient(rgba(12, 74, 110, 0.6), rgba(12, 74, 110, 0.8)), url('https://images.unsplash.com/photo-1515669097368-22e68427d265?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased bg-gray-50">
+
+    <!-- Navigation -->
+    <nav class="absolute top-0 w-full z-50 px-6 py-4 flex justify-between items-center text-white">
+        <div class="text-2xl font-serif font-bold tracking-wider">THALASSA</div>
+        <div class="hidden md:flex space-x-8 text-sm font-medium tracking-wide">
+            <a href="#" class="hover:text-aegean-500 transition">HOME</a>
+            <a href="#about" class="hover:text-aegean-500 transition">THE EXPERIENCE</a>
+            <a href="#book" class="hover:text-aegean-500 transition">RESERVATIONS</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-bg h-screen flex flex-col justify-center items-center text-center px-4">
+        <h1 class="text-5xl md:text-7xl font-serif font-bold text-white mb-6">A Taste of the Aegean</h1>
+        <p class="text-lg md:text-xl text-gray-200 mb-10 max-w-2xl font-light">Experience modern Mediterranean gastronomy overlooking the beautiful Marina Zeas in Piraeus.</p>
+        <a href="#book" class="bg-white text-aegean-900 px-8 py-3 rounded-none uppercase tracking-widest text-sm font-semibold hover:bg-aegean-500 hover:text-white transition duration-300">Book a Table</a>
+    </header>
+
+    <!-- Booking Section -->
+    <section id="book" class="py-24 px-4 bg-white">
+        <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="text-4xl font-serif font-bold text-aegean-900 mb-6">Reserve Your Table</h2>
+                <p class="text-gray-600 mb-8 font-light leading-relaxed">
+                    Join us at Thalassa for an unforgettable culinary journey. Due to limited seating, we highly recommend booking in advance. For parties larger than 6, please contact us directly.
+                </p>
+                <div class="space-y-4 text-sm text-gray-500">
+                    <p>📍 Marina Zeas, Piraeus 185 36, Greece</p>
+                    <p>📞 +30 210 123 4567</p>
+                    <p>🕒 Tue - Sun: 18:00 - 24:00</p>
+                </div>
+            </div>
+
+            <div class="bg-aegean-50 p-8 shadow-sm border border-aegean-100 relative">
+                <div id="success-message" class="hidden absolute inset-0 bg-aegean-900 text-white flex-col justify-center items-center text-center p-8 z-10">
+                    <svg class="w-16 h-16 mb-4 text-aegean-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <h3 class="text-2xl font-serif mb-2">Request Received</h3>
+                    <p class="font-light">Thank you! Your booking is pending. We will review it and you will receive a confirmation shortly.</p>
+                </div>
+
+                <form id="booking-form" class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                        <input type="text" id="name" required class="w-full px-4 py-2 border border-gray-300 focus:ring-aegean-500 focus:border-aegean-500 outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                        <input type="email" id="email" required class="w-full px-4 py-2 border border-gray-300 focus:ring-aegean-500 focus:border-aegean-500 outline-none transition">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                            <input type="date" id="date" required class="w-full px-4 py-2 border border-gray-300 focus:ring-aegean-500 focus:border-aegean-500 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Time</label>
+                            <select id="time" required class="w-full px-4 py-2 border border-gray-300 focus:ring-aegean-500 focus:border-aegean-500 outline-none transition">
+                                <option value="">Select Time</option>
+                                <option value="18:00">18:00</option>
+                                <option value="19:00">19:00</option>
+                                <option value="20:00">20:00</option>
+                                <option value="21:00">21:00</option>
+                                <option value="22:00">22:00</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Number of Guests</label>
+                        <input type="number" id="guests" min="1" max="6" required class="w-full px-4 py-2 border border-gray-300 focus:ring-aegean-500 focus:border-aegean-500 outline-none transition">
+                    </div>
+                    <button type="submit" id="submit-btn" class="w-full bg-aegean-900 text-white py-3 uppercase tracking-widest text-sm font-semibold hover:bg-aegean-800 transition duration-300">
+                        Request Booking
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-aegean-900 text-center py-8 text-gray-400 text-sm">
+        <p>&copy; 2024 Thalassa Piraeus. All rights reserved.</p>
+    </footer>
+
+    <!-- Import Customer App Logic -->
+    <script type="module" src="./js/app.js"></script>
+</body>
+</html>
