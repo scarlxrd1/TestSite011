@@ -25,25 +25,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let unsubscribeSnapshot = null;
 
+    // --- Safe Dynamic Column Injection for Phone Number ---
+    // We inject this into the table header so we don't have to rewrite admin.html
+    const theadTr = document.querySelector('thead tr');
+    if (theadTr && !document.getElementById('th-phone')) {
+        const phoneTh = document.createElement('th');
+        phoneTh.id = 'th-phone';
+        phoneTh.className = "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider";
+        phoneTh.textContent = "Phone Number";
+        
+        // Insert before the "Party Size" column (which is index 2 in the original setup)
+        if (theadTr.children.length >= 3) {
+            theadTr.insertBefore(phoneTh, theadTr.children[2]);
+        } else {
+            theadTr.appendChild(phoneTh);
+        }
+    }
+
     // ==========================================
     // 1. Authentication Guard & Management
     // ==========================================
     
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            // Admin is logged in: Show dashboard, hide login
             loginScreen.classList.add('hidden');
             dashboardScreen.classList.remove('hidden');
             if (adminUserEmail) adminUserEmail.textContent = user.email;
             
-            // Initialize real-time data fetching
             fetchBookings();
         } else {
-            // Admin is logged out: Show login, hide dashboard
             loginScreen.classList.remove('hidden');
             dashboardScreen.classList.add('hidden');
             
-            // Clean up Firestore listener to prevent memory leaks/permission errors
             if (unsubscribeSnapshot) {
                 unsubscribeSnapshot();
                 unsubscribeSnapshot = null;
@@ -51,7 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Handle Login Form Submission
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -70,7 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Handle Logout
     if (logoutBtn) {
         logoutBtn.addEventListener('click', async () => {
             try {
@@ -86,18 +97,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
     
     function fetchBookings() {
-        // Query the 'bookings' collection, ordered by newest first
         const bookingsRef = collection(db, "bookings");
         const q = query(bookingsRef, orderBy("createdAt", "desc"));
         
-        // Listen for real-time updates
         unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
-            tableBody.innerHTML = ''; // Clear existing rows
+            if (!tableBody) return;
+            tableBody.innerHTML = ''; 
             
             if (snapshot.empty) {
                 tableBody.innerHTML = `
                     <tr>
-                        <td colspan="5" class="px-6 py-8 text-center text-sm text-gray-500">
+                        <td colspan="6" class="px-6 py-8 text-center text-sm text-gray-500">
                             No bookings found.
                         </td>
                     </tr>`;
@@ -111,7 +121,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-gray-50 transition-colors";
                 
-                // Determine Status Badge Styling
                 let statusBadge = '';
                 if (booking.status === 'pending') {
                     statusBadge = `<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>`;
@@ -121,7 +130,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     statusBadge = `<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Rejected</span>`;
                 }
 
-                // Determine Action Buttons (Only show Accept/Reject if pending)
                 let actionButtons = '';
                 if (booking.status === 'pending') {
                     actionButtons = `
@@ -132,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     actionButtons = `<span class="text-gray-400 text-sm italic">Resolved</span>`;
                 }
 
-                // Build the table row HTML
+                // Table Row matching the new header structure (including Phone Number)
                 tr.innerHTML = `
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm font-medium text-gray-900">${booking.date}</div>
@@ -141,6 +149,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm font-medium text-gray-900">${booking.name}</div>
                         <div class="text-sm text-gray-500">${booking.email}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900 font-medium">${booking.phone || 'N/A'}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         <div class="flex items-center">
@@ -159,12 +170,14 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }, (error) => {
             console.error("Error fetching bookings: ", error);
-            tableBody.innerHTML = `
-                <tr>
-                    <td colspan="5" class="px-6 py-4 text-center text-sm text-red-500">
-                        Error loading bookings. Please verify your permissions.
-                    </td>
-                </tr>`;
+            if (tableBody) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="px-6 py-4 text-center text-sm text-red-500">
+                            Error loading bookings. Please verify your permissions.
+                        </td>
+                    </tr>`;
+            }
         });
     }
 
@@ -172,10 +185,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // 3. Admin Actions (Accept / Reject)
     // ==========================================
     
-    // Use Event Delegation on the table body to handle dynamic buttons
     if (tableBody) {
         tableBody.addEventListener('click', async (e) => {
-            // Check if a button was clicked
             if (e.target.tagName === 'BUTTON') {
                 const id = e.target.getAttribute('data-id');
                 const action = e.target.getAttribute('data-action');
@@ -185,24 +196,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     const bookingRef = doc(db, "bookings", id);
                     
                     try {
-                        // Optimistic UI update: disable button to prevent double-clicks
                         e.target.disabled = true;
                         e.target.innerText = 'Processing...';
                         
-                        // Update the document in Firestore
                         await updateDoc(bookingRef, {
                             status: newStatus
                         });
                         
-                        // Note: We don't need to manually update the DOM here because 
-                        // the onSnapshot listener will automatically detect the change 
-                        // and re-render the table with the new status.
-                        
                     } catch (error) {
                         console.error(`Error updating document to ${newStatus}: `, error);
                         alert("Failed to update booking status. Please try again.");
-                        
-                        // Re-enable button if it failed
                         e.target.disabled = false;
                         e.target.innerText = action === 'accept' ? 'Accept' : 'Reject';
                     }
