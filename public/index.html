@@ -1,27 +1,40 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth" style="color-scheme: dark;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thalassa | Fine Dining in Piraeus</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
+                        gold: {
+                            300: '#FDE68A',
+                            400: '#FBBF24',
+                            500: '#D4AF37', // Premium metallic gold
+                            600: '#B4942D',
+                        },
                         aegean: {
-                            50: '#f0f7fa',
-                            100: '#e0f0f6',
-                            500: '#0ea5e9',
-                            800: '#075985',
-                            900: '#0c4a6e',
+                            900: '#0F172A', // Deep slate/blue
+                            950: '#020617', // Midnight Aegean blue
                         }
                     },
                     fontFamily: {
                         serif: ['Playfair Display', 'serif'],
                         sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
                     }
                 }
             }
@@ -29,62 +42,93 @@
     </script>
     <style>
         .hero-bg {
-            background-image: linear-gradient(rgba(12, 74, 110, 0.65), rgba(12, 74, 110, 0.85)), url('https://images.unsplash.com/photo-1515669097368-22e68427d265?q=80&w=2070&auto=format&fit=crop');
+            background-image: linear-gradient(to bottom, rgba(2, 6, 23, 0.6), rgba(2, 6, 23, 0.95)), url('https://images.unsplash.com/photo-1515669097368-22e68427d265?q=80&w=2070&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
+        }
+        
+        /* Custom scrollbar for a premium feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D4AF37;
+            border-radius: 4px;
+        }
+        
+        /* Remove default calendar icon in webkit to style it cleanly */
+        ::-webkit-calendar-picker-indicator {
+            filter: invert(1) sepia(1) saturate(5) hue-rotate(175deg);
+            opacity: 0.6;
+            cursor: pointer;
         }
     </style>
 </head>
-<body class="font-sans text-gray-800 antialiased bg-gray-50 relative">
+<body class="font-sans text-slate-300 antialiased bg-aegean-950 relative selection:bg-gold-500 selection:text-aegean-950">
 
     <!-- Menu Overlay Modal -->
-    <div id="menuModal" class="fixed inset-0 z-[100] bg-aegean-900/95 backdrop-blur-md hidden justify-center items-center p-4">
-        <div class="bg-white max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative rounded-sm">
-            <button id="closeMenuBtn" class="absolute top-6 right-6 text-gray-400 hover:text-aegean-900 transition duration-200">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    <div id="menuModal" class="fixed inset-0 z-[100] bg-aegean-950/80 backdrop-blur-xl hidden justify-center items-center p-4 transition-all duration-500">
+        <div class="bg-aegean-900 w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-[0_0_50px_rgba(0,0,0,0.5)] relative border border-white/5 rounded-sm">
+            <button id="closeMenuBtn" class="absolute top-8 right-8 text-slate-400 hover:text-gold-500 hover:rotate-90 transition-all duration-300">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             
-            <div class="p-8 md:p-14">
-                <h2 class="text-4xl font-serif font-bold text-aegean-900 mb-2 text-center">Thalassa Menu</h2>
-                <p class="text-center text-gray-500 mb-10 tracking-widest uppercase text-sm">A Culinary Journey</p>
+            <div class="p-10 md:p-20">
+                <div class="text-center mb-16">
+                    <p class="text-gold-500 tracking-[0.3em] uppercase text-xs font-semibold mb-4">A Culinary Journey</p>
+                    <h2 class="text-5xl md:text-6xl font-serif font-bold text-white mb-6">The Menu</h2>
+                    <div class="w-16 h-[1px] bg-gold-500 mx-auto"></div>
+                </div>
                 
-                <div class="space-y-10">
+                <div class="space-y-16">
+                    <!-- Starters -->
                     <div>
-                        <h3 class="text-2xl font-serif font-semibold text-aegean-800 mb-4 border-b border-aegean-100 pb-2">Starters</h3>
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-baseline">
-                                <div>
-                                    <h4 class="text-lg font-medium text-gray-900">Grilled Aegean Octopus</h4>
-                                    <p class="text-sm text-gray-600 font-light mt-1">Santorini fava puree, capers, caramelized shallots</p>
+                        <h3 class="text-3xl font-serif text-white mb-8 flex items-center">
+                            <span class="bg-aegean-900 pr-6 relative z-10">Starters</span>
+                            <div class="h-[1px] flex-1 bg-white/10 -ml-4"></div>
+                        </h3>
+                        <div class="space-y-8">
+                            <div class="group flex justify-between items-baseline cursor-default">
+                                <div class="pr-6">
+                                    <h4 class="text-xl font-serif text-slate-100 group-hover:text-gold-500 transition-colors duration-300">Grilled Aegean Octopus</h4>
+                                    <p class="text-sm text-slate-400 font-light mt-2 leading-relaxed">Santorini fava puree, capers, caramelized shallots, extra virgin olive oil</p>
                                 </div>
-                                <span class="text-lg font-semibold text-aegean-900 ml-4">€24</span>
+                                <span class="text-xl font-serif text-gold-500 ml-4 shrink-0">€24</span>
                             </div>
-                            <div class="flex justify-between items-baseline">
-                                <div>
-                                    <h4 class="text-lg font-medium text-gray-900">Tuna Tartare</h4>
-                                    <p class="text-sm text-gray-600 font-light mt-1">Avocado, citrus dressing, sesame, squid ink tuile</p>
+                            <div class="group flex justify-between items-baseline cursor-default">
+                                <div class="pr-6">
+                                    <h4 class="text-xl font-serif text-slate-100 group-hover:text-gold-500 transition-colors duration-300">Bluefin Tuna Tartare</h4>
+                                    <p class="text-sm text-slate-400 font-light mt-2 leading-relaxed">Avocado mousse, citrus dressing, toasted sesame, squid ink tuile</p>
                                 </div>
-                                <span class="text-lg font-semibold text-aegean-900 ml-4">€28</span>
+                                <span class="text-xl font-serif text-gold-500 ml-4 shrink-0">€28</span>
                             </div>
                         </div>
                     </div>
                     
+                    <!-- Main Courses -->
                     <div>
-                        <h3 class="text-2xl font-serif font-semibold text-aegean-800 mb-4 border-b border-aegean-100 pb-2">Main Courses</h3>
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-baseline">
-                                <div>
-                                    <h4 class="text-lg font-medium text-gray-900">Fresh Catch of the Day</h4>
-                                    <p class="text-sm text-gray-600 font-light mt-1">Grilled with ladolemono, wild greens (price per kg)</p>
+                        <h3 class="text-3xl font-serif text-white mb-8 flex items-center">
+                            <span class="bg-aegean-900 pr-6 relative z-10">Main Courses</span>
+                            <div class="h-[1px] flex-1 bg-white/10 -ml-4"></div>
+                        </h3>
+                        <div class="space-y-8">
+                            <div class="group flex justify-between items-baseline cursor-default">
+                                <div class="pr-6">
+                                    <h4 class="text-xl font-serif text-slate-100 group-hover:text-gold-500 transition-colors duration-300">Fresh Catch of the Day</h4>
+                                    <p class="text-sm text-slate-400 font-light mt-2 leading-relaxed">Wood-fire grilled with ladolemono, served with seasonal wild greens</p>
                                 </div>
-                                <span class="text-lg font-semibold text-aegean-900 ml-4">€85</span>
+                                <span class="text-xl font-serif text-gold-500 ml-4 shrink-0">€85</span>
                             </div>
-                            <div class="flex justify-between items-baseline">
-                                <div>
-                                    <h4 class="text-lg font-medium text-gray-900">Lobster Kritharoto</h4>
-                                    <p class="text-sm text-gray-600 font-light mt-1">Orzo pasta, fresh tomato, bisque, herbs</p>
+                            <div class="group flex justify-between items-baseline cursor-default">
+                                <div class="pr-6">
+                                    <h4 class="text-xl font-serif text-slate-100 group-hover:text-gold-500 transition-colors duration-300">Aegean Lobster Kritharoto</h4>
+                                    <p class="text-sm text-slate-400 font-light mt-2 leading-relaxed">Traditional orzo pasta, fresh heirloom tomato, rich bisque, coastal herbs</p>
                                 </div>
-                                <span class="text-lg font-semibold text-aegean-900 ml-4">€45</span>
+                                <span class="text-xl font-serif text-gold-500 ml-4 shrink-0">€45</span>
                             </div>
                         </div>
                     </div>
@@ -93,105 +137,166 @@
         </div>
     </div>
 
-    <!-- Navigation (Flexbox Layout to prevent collisions) -->
-    <nav class="absolute top-0 w-full z-50 px-6 py-5 flex flex-wrap justify-between items-center text-white gap-4">
+    <!-- Navigation (Glassmorphism) -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-6 flex flex-wrap justify-between items-center text-white gap-4 bg-aegean-950/50 backdrop-blur-lg border-b border-white/5 transition-all duration-300">
         <!-- Logo -->
-        <div class="text-2xl font-serif font-bold tracking-wider">THALASSA</div>
+        <div class="text-2xl md:text-3xl font-serif font-bold tracking-[0.2em] text-white cursor-pointer hover:text-gold-500 transition-colors duration-300">
+            <span class="text-gold-500">T</span>HALASSA
+        </div>
         
-        <!-- Center Links (Hidden on small screens to save space) -->
-        <div class="hidden md:flex space-x-8 text-sm font-medium tracking-wide">
-            <a href="#" class="hover:text-aegean-500 transition">HOME</a>
-            <a href="#about" class="hover:text-aegean-500 transition">THE EXPERIENCE</a>
+        <!-- Center Links -->
+        <div class="hidden md:flex space-x-10 text-xs font-semibold tracking-[0.15em] uppercase">
+            <a href="#" class="text-slate-300 hover:text-gold-500 transition-colors duration-300 relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-[1px] after:bg-gold-500 hover:after:w-full after:transition-all after:duration-300">Home</a>
+            <a href="#about" class="text-slate-300 hover:text-gold-500 transition-colors duration-300 relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-[1px] after:bg-gold-500 hover:after:w-full after:transition-all after:duration-300">The Experience</a>
         </div>
         
         <!-- Action Buttons -->
         <div class="flex items-center space-x-4">
-            <button id="openMenuBtn" class="bg-transparent border border-white/50 px-5 py-2 text-sm font-semibold uppercase tracking-widest hover:bg-white hover:text-aegean-900 transition duration-300">
+            <button id="openMenuBtn" class="bg-transparent border border-gold-500 text-gold-500 px-6 py-2.5 text-xs font-bold uppercase tracking-[0.15em] hover:bg-gold-500 hover:text-aegean-950 transition-all duration-300 hover:scale-105">
                 View Menu
             </button>
-            <a href="#book" class="bg-white text-aegean-900 px-5 py-2 text-sm font-semibold uppercase tracking-widest hover:bg-aegean-500 hover:text-white transition duration-300 hidden sm:block">
-                Book Table
+            <a href="#book" class="bg-gold-500 text-aegean-950 px-6 py-2.5 text-xs font-bold uppercase tracking-[0.15em] hover:bg-gold-400 hover:shadow-[0_0_15px_rgba(212,175,55,0.4)] transition-all duration-300 hover:scale-105 hidden sm:block">
+                Reservations
             </a>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="hero-bg h-screen flex flex-col justify-center items-center text-center px-4">
-        <h1 class="text-5xl md:text-7xl font-serif font-bold text-white mb-6">A Taste of the Aegean</h1>
-        <p class="text-lg md:text-xl text-gray-200 mb-10 max-w-2xl font-light">Experience modern Mediterranean gastronomy overlooking the beautiful Marina Zeas in Piraeus.</p>
-        <a href="#book" class="bg-white text-aegean-900 px-8 py-3 uppercase tracking-widest text-sm font-semibold hover:bg-aegean-500 hover:text-white transition duration-300">Reserve Now</a>
+    <header class="hero-bg h-screen flex flex-col justify-center items-center text-center px-4 relative overflow-hidden">
+        <div class="relative z-10 animate-fade-in-up flex flex-col items-center">
+            <span class="text-gold-500 tracking-[0.3em] uppercase text-xs md:text-sm font-semibold mb-6 block">A Michelin-Star Experience</span>
+            <h1 class="text-6xl md:text-8xl lg:text-9xl font-serif font-bold text-white mb-8 drop-shadow-2xl leading-tight">
+                Taste the <br/> <span class="italic font-light">Aegean</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-300 mb-12 max-w-2xl font-light mx-auto leading-relaxed">
+                Immerse yourself in modern Mediterranean gastronomy, overlooking the breathtaking Marina Zeas in Piraeus.
+            </p>
+            <a href="#book" class="group relative inline-flex items-center justify-center bg-gold-500 text-aegean-950 px-10 py-4 uppercase tracking-[0.2em] text-sm font-bold hover:bg-gold-400 hover:scale-105 transition-all duration-500 shadow-[0_0_20px_rgba(212,175,55,0.2)] overflow-hidden">
+                <span class="relative z-10">Reserve Your Table</span>
+                <div class="absolute inset-0 h-full w-full bg-white/20 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500"></div>
+            </a>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-gold-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </div>
     </header>
 
     <!-- Booking Section -->
-    <section id="book" class="py-24 px-4 bg-white">
-        <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-            <div class="pr-0 md:pr-8">
-                <h2 class="text-4xl font-serif font-bold text-aegean-900 mb-6">Reserve Your Table</h2>
-                <p class="text-gray-600 mb-8 font-light leading-relaxed">
-                    Join us at Thalassa for an unforgettable culinary journey. Due to limited seating, we highly recommend booking in advance. For parties larger than 6, please contact us directly.
+    <section id="book" class="py-32 px-4 bg-aegean-950 relative border-t border-white/5">
+        <!-- Decorative background element -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+            <div class="absolute -top-[20%] -right-[10%] w-[50%] h-[50%] bg-gold-500/5 blur-[120px] rounded-full"></div>
+            <div class="absolute bottom-[10%] -left-[10%] w-[40%] h-[40%] bg-blue-900/10 blur-[100px] rounded-full"></div>
+        </div>
+
+        <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center relative z-10">
+            
+            <!-- Left Text Content -->
+            <div class="pr-0 lg:pr-12">
+                <p class="text-gold-500 tracking-[0.2em] uppercase text-xs font-semibold mb-4">Join Us</p>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-white mb-8 leading-tight">Secure Your <br/><span class="italic font-light text-gold-500">Reservation</span></h2>
+                <p class="text-slate-400 mb-10 font-light leading-relaxed text-lg">
+                    Join us at Thalassa for an unforgettable culinary journey. Due to our intimate dining room, we highly recommend booking in advance. For exclusive private dining or parties larger than 6, please contact our concierge directly.
                 </p>
-                <div class="space-y-4 text-sm text-gray-600 font-medium">
-                    <p class="flex items-center"><span class="text-aegean-500 mr-3 text-lg">📍</span> Marina Zeas, Piraeus 185 36, Greece</p>
-                    <p class="flex items-center"><span class="text-aegean-500 mr-3 text-lg">📞</span> +30 210 123 4567</p>
-                    <p class="flex items-center"><span class="text-aegean-500 mr-3 text-lg">🕒</span> Tue - Sun: 18:00 - 24:00</p>
+                
+                <div class="space-y-6 text-sm text-slate-300 font-light">
+                    <div class="flex items-start group">
+                        <span class="text-gold-500 mr-4 text-xl group-hover:scale-110 transition-transform">📍</span> 
+                        <div>
+                            <strong class="block text-white font-medium mb-1 tracking-wide">Location</strong>
+                            Marina Zeas, Piraeus 185 36, Greece
+                        </div>
+                    </div>
+                    <div class="flex items-start group">
+                        <span class="text-gold-500 mr-4 text-xl group-hover:scale-110 transition-transform">📞</span> 
+                        <div>
+                            <strong class="block text-white font-medium mb-1 tracking-wide">Concierge</strong>
+                            +30 210 123 4567
+                        </div>
+                    </div>
+                    <div class="flex items-start group">
+                        <span class="text-gold-500 mr-4 text-xl group-hover:scale-110 transition-transform">🕒</span> 
+                        <div>
+                            <strong class="block text-white font-medium mb-1 tracking-wide">Hours of Service</strong>
+                            Tuesday - Sunday: 18:00 - 24:00
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-aegean-50 p-8 shadow-sm border border-aegean-100 relative">
+            <!-- Right Form Container -->
+            <div class="bg-aegean-900/60 backdrop-blur-xl p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 relative rounded-sm">
+                
                 <!-- Success State Overlay -->
-                <div id="successMessage" class="hidden absolute inset-0 bg-aegean-900 text-white flex-col justify-center items-center text-center p-8 z-10">
-                    <svg class="w-16 h-16 mb-4 text-aegean-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                    <h3 class="text-2xl font-serif mb-2">Request Received</h3>
-                    <p class="font-light">Thank you! Your booking is pending. We will review it and you will receive a confirmation shortly.</p>
+                <div id="successMessage" class="hidden absolute inset-0 bg-aegean-950/95 backdrop-blur-md text-white flex-col justify-center items-center text-center p-10 z-20 border border-gold-500/30">
+                    <div class="w-20 h-20 rounded-full border-2 border-gold-500 flex items-center justify-center mb-6 bg-gold-500/10">
+                        <svg class="w-10 h-10 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <h3 class="text-3xl font-serif mb-4 text-white">Request Received</h3>
+                    <p class="font-light text-slate-400 leading-relaxed max-w-sm">Thank you. Your booking is currently pending review. Our team will send a formal confirmation to your email shortly.</p>
                 </div>
 
-                <form id="bookingForm" class="space-y-5">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                        <input type="text" id="name" required class="w-full px-4 py-2 border border-gray-300 focus:ring-aegean-500 focus:border-aegean-500 outline-none transition">
+                <form id="bookingForm" class="space-y-6">
+                    
+                    <!-- Full Name -->
+                    <div class="relative group">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2 group-focus-within:text-gold-500 transition-colors">Full Name</label>
+                        <input type="text" id="name" required class="w-full bg-aegean-950/50 text-white px-4 py-3 border border-white/10 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none transition-all duration-300 placeholder-slate-600 rounded-sm">
                     </div>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                            <input type="email" id="email" required class="w-full px-4 py-2 border border-gray-300 focus:ring-aegean-500 focus:border-aegean-500 outline-none transition">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Email -->
+                        <div class="relative group">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2 group-focus-within:text-gold-500 transition-colors">Email Address</label>
+                            <input type="email" id="email" required class="w-full bg-aegean-950/50 text-white px-4 py-3 border border-white/10 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none transition-all duration-300 placeholder-slate-600 rounded-sm">
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                            <input type="tel" id="phone" required class="w-full px-4 py-2 border border-gray-300 focus:ring-aegean-500 focus:border-aegean-500 outline-none transition" placeholder="+30...">
+                        <!-- Phone -->
+                        <div class="relative group">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2 group-focus-within:text-gold-500 transition-colors">Phone Number</label>
+                            <input type="tel" id="phone" required class="w-full bg-aegean-950/50 text-white px-4 py-3 border border-white/10 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none transition-all duration-300 placeholder-slate-600 rounded-sm" placeholder="+30...">
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-                            <input type="date" id="date" required class="w-full px-4 py-2 border border-gray-300 focus:ring-aegean-500 focus:border-aegean-500 outline-none transition">
+                    <div class="grid grid-cols-2 gap-6">
+                        <!-- Date -->
+                        <div class="relative group">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2 group-focus-within:text-gold-500 transition-colors">Date</label>
+                            <input type="date" id="date" required class="w-full bg-aegean-950/50 text-white px-4 py-3 border border-white/10 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none transition-all duration-300 rounded-sm">
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Time</label>
-                            <select id="time" required class="w-full px-4 py-2 border border-gray-300 focus:ring-aegean-500 focus:border-aegean-500 outline-none transition">
-                                <option value="">Select Time</option>
-                                <option value="18:00">18:00</option>
-                                <option value="19:00">19:00</option>
-                                <option value="20:00">20:00</option>
-                                <option value="21:00">21:00</option>
-                                <option value="22:00">22:00</option>
+                        <!-- Time -->
+                        <div class="relative group">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2 group-focus-within:text-gold-500 transition-colors">Time</label>
+                            <select id="time" required class="w-full bg-aegean-950/50 text-white px-4 py-3 border border-white/10 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none transition-all duration-300 rounded-sm appearance-none">
+                                <option value="" class="bg-aegean-900 text-slate-400">Select Time</option>
+                                <option value="18:00" class="bg-aegean-900">18:00</option>
+                                <option value="19:00" class="bg-aegean-900">19:00</option>
+                                <option value="20:00" class="bg-aegean-900">20:00</option>
+                                <option value="21:00" class="bg-aegean-900">21:00</option>
+                                <option value="22:00" class="bg-aegean-900">22:00</option>
                             </select>
+                            <!-- Custom Select Arrow -->
+                            <div class="absolute right-4 top-[38px] pointer-events-none text-gold-500">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
                         </div>
                     </div>
                     
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Number of Guests</label>
-                        <input type="number" id="guests" min="1" max="6" required class="w-full px-4 py-2 border border-gray-300 focus:ring-aegean-500 focus:border-aegean-500 outline-none transition">
+                    <!-- Guests -->
+                    <div class="relative group">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2 group-focus-within:text-gold-500 transition-colors">Number of Guests</label>
+                        <input type="number" id="guests" min="1" max="6" required class="w-full bg-aegean-950/50 text-white px-4 py-3 border border-white/10 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none transition-all duration-300 placeholder-slate-600 rounded-sm">
                     </div>
 
                     <!-- Anti-Bot CAPTCHA -->
-                    <div class="bg-white p-4 border border-gray-200 flex items-center justify-between mt-2">
-                        <label id="captchaLabel" class="text-sm font-semibold text-aegean-900">Security Check: Loading...</label>
-                        <input type="number" id="captchaInput" required class="w-24 px-3 py-2 border border-gray-300 focus:ring-aegean-500 focus:border-aegean-500 outline-none transition text-center font-bold text-gray-800" placeholder="?">
+                    <div class="bg-aegean-950/80 p-5 border border-white/5 flex items-center justify-between mt-8 rounded-sm">
+                        <label id="captchaLabel" class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Security Check: Loading...</label>
+                        <input type="number" id="captchaInput" required class="w-20 bg-aegean-900 text-gold-500 px-3 py-2 border border-white/10 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none transition-all duration-300 text-center font-bold text-lg rounded-sm shadow-inner" placeholder="?">
                     </div>
 
-                    <button type="submit" id="submitBtn" class="w-full bg-aegean-900 text-white py-3 uppercase tracking-widest text-sm font-semibold hover:bg-aegean-800 transition duration-300 mt-4">
+                    <!-- Submit Button -->
+                    <button type="submit" id="submitBtn" class="w-full bg-gold-500 text-aegean-950 py-4 uppercase tracking-[0.2em] text-xs font-bold hover:bg-gold-400 hover:scale-[1.02] transition-all duration-300 mt-8 shadow-[0_0_20px_rgba(212,175,55,0.15)] rounded-sm">
                         Request Booking
                     </button>
                 </form>
@@ -200,7 +305,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-aegean-900 text-center py-8 text-gray-400 text-sm">
+    <footer class="bg-aegean-950 border-t border-white/5 text-center py-12 text-slate-500 text-xs tracking-widest uppercase">
         <p>&copy; 2024 Thalassa Piraeus. All rights reserved.</p>
     </footer>
 
